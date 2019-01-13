@@ -16,6 +16,7 @@ class BlockController {
         this.init();
         this.getBlockByIndex();
         this.postNewBlock();
+        this.handleRequests();
     }
 
     async init() {
@@ -55,20 +56,30 @@ class BlockController {
             // Using try and catch when using async/await syntax?
             console.log("POST /block");
             console.log("Body data", req.body.data);
-            let data = req.body.data;
-            if (data === "" || data === undefined) {
+            let blockBody = req.body.body;
+            if (blockBody === "" || blockBody === undefined) {
                 res.status(404);
-                res.json({"error": "Body json format incorrect, check content", "content": {"data":"Insert data here"} });
+                res.json({"error": "Body json format incorrect, check content", "content": {"body":"Insert data here"} });
             } else {
                 console.log("Adding new block");
                 let newBlock = await new BlockClass.Block(); // TODO: is this await needed?
-                newBlock.body = req.body["data"];
+                newBlock.body = blockBody;
                 newBlock = await this.blockChain.addBlock(newBlock);
                 console.log("New Block added to blockchain");
                 console.log(newBlock);
-                res.send(newBlock); // TODO: send json format?
+                res.json(JSON.parse(newBlock)); // TODO: send json format?
             }
 
+        });
+    }
+
+    /**
+     * Handle requests that do not match the required api format
+     */
+    handleRequests() {
+        this.app.all('*', (req, res) => {
+            res.status(404);
+            res.send("Invalid request. Use GET /block/:height or POST /block");
         });
     }
 
