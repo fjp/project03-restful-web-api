@@ -54,14 +54,11 @@ class Blockchain {
             // previous block hash
             let previousBlock = await this.getBlock(newBlock.height - 1);
             newBlock.previousBlockHash = previousBlock.hash;
-            // SHA256 requires a string of data
-            newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
-            // add block to chain
-            return this.db.addDataToLevelDB(JSON.stringify(newBlock).toString()); // TODO: await required here?
-        } else {
-            newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
-            return this.db.addDataToLevelDB(JSON.stringify(newBlock)); // TOOD: await required here?
         }
+        // SHA256 requires a string of data
+        newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
+        // add block to chain
+        return this.db.addDataToLevelDB(JSON.stringify(newBlock)) // TODO: await required here?
     }
 
     // Get Block By Height
