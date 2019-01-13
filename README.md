@@ -92,7 +92,13 @@ If the height parameter is out of bounds, the response is an error message which
 
 ## Testing the project
 
-After the server is started using `node app.js`, the endpoints can be tested with [Postman](https://www.getpostman.com/) or [curl](https://curl.haxx.se/) on the commandline.
+After the server is started using `node app.js`, 
+the endpoints can be tested with 
+[Postman](https://www.getpostman.com/) or 
+[curl](https://curl.haxx.se/) on the commandline.
+
+The first time the server starts, it will contain only the genesis block. 
+To create more blocks use the POST endpoint. All the blocks on the chain can be retrieved using the GET endpoint.
 
 ### Postman
 
